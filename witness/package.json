@@ -11,8 +11,8 @@
   },
   "license": "MIT",
   "dependencies": {
-    "headless-byteball": "git+https://github.com/byteball/headless-byteball.git",
-    "byteball-witness": "git+https://github.com/byteball/byteball-witness.git",
+    "headless-ttt": "file:../../headless-ttt",
+    "ttt-supernode": "file:../../ttt-supernode",
     "byteball-explorer": "git+https://github.com/byteball/byteball-explorer.git"
   }
 }

@@ -9,6 +9,6 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "byteball-hub": "git+https://github.com/byteball/byteball-hub.git"
+    "ttt-hub": "file:../../ttt-hub"
   }
 }

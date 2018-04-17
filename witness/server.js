@@ -1,12 +1,12 @@
 "use strict";
-require("byteballcore/wallet.js");
-const witness = require('byteball-witness');
-const explorer = require('byteball-explorer/explorer.js');
-const headlessWallet = require('headless-byteball');
-const eventBus = require('byteballcore/event_bus.js');
-const validationUtils = require("byteballcore/validation_utils.js");
-const conf = require('byteballcore/conf.js');
-const constants = require('byteballcore/constants.js');
+require("tttcore/wallet.js");
+const witness = require('ttt-witness');
+const explorer = require('ttt-explorer/explorer.js');
+const headlessWallet = require('headless-ttt');
+const eventBus = require('tttcore/event_bus.js');
+const validationUtils = require("tttcore/validation_utils.js");
+const conf = require('tttcore/conf.js');
+const constants = require('tttcore/constants.js');
 
 function initRPC() {
 	var rpc = require('json-rpc2');
@@ -76,9 +76,9 @@ function initRPC() {
 }
 
 function createIndivisibleAssetPayment(asset, amount, fromAddress, toAddress, toDevice, callback) {
-	var network = require('byteballcore/network.js');
-	var indivisibleAsset = require('byteballcore/indivisible_asset.js');
-	var walletGeneral = require('byteballcore/wallet_general.js');
+	var network = require('tttcore/network.js');
+	var indivisibleAsset = require('tttcore/indivisible_asset.js');
+	var walletGeneral = require('tttcore/wallet_general.js');
 
 	indivisibleAsset.composeAndSaveIndivisibleAssetPaymentJoint({
 		asset: asset,
@@ -105,8 +105,8 @@ function createIndivisibleAssetPayment(asset, amount, fromAddress, toAddress, to
 }
 
 function postTimestamp(address) {
-	var composer = require('byteballcore/composer.js');
-	var network = require('byteballcore/network.js');
+	var composer = require('tttcore/composer.js');
+	var network = require('tttcore/network.js');
 	var callbacks = composer.getSavingCallbacks({
 		ifNotEnoughFunds: function(err) {
 			console.error(err);
@@ -135,6 +135,6 @@ eventBus.once('headless_wallet_ready', function() {
 
 eventBus.on('paired', function(from_address) {
     console.log('Sucessfully paired with:' + from_address);
-    const device = require('byteballcore/device.js');
+    const device = require('tttcore/device.js');
     device.sendMessageToDevice(from_address, "text", "Welcome to devnet Witness!");
 });
