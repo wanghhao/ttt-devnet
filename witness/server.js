@@ -1,6 +1,6 @@
 "use strict";
 require("tttcore/wallet.js");
-const witness = require('ttt-witness');
+const witness = require('ttt-supernode');
 const explorer = require('ttt-explorer/explorer.js');
 const headlessWallet = require('headless-ttt');
 const eventBus = require('tttcore/event_bus.js');

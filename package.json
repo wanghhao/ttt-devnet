@@ -1,7 +1,7 @@
 {
-  "name": "byteball-devnet",
+  "name": "ttt-devnet",
   "version": "1.0.0",
-  "description": "Devnet for Byteball",
+  "description": "Devnet for TTT",
   "main": "index.js",
   "dependencies": {
     "byteball-devnet-hub": "file:hub",

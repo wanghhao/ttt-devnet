@@ -13,6 +13,6 @@
   "dependencies": {
     "headless-ttt": "file:../../headless-ttt",
     "ttt-supernode": "file:../../ttt-supernode",
-    "byteball-explorer": "git+https://github.com/byteball/byteball-explorer.git"
+    "ttt-explorer": "file:../../ttt-explorer"
   }
 }
