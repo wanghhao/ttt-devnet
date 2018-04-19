@@ -72,6 +72,46 @@ function initRPC() {
 		});
 	});
 
+	server.expose('getbalance', function(args, opt, cb) {
+		let start_time = Date.now();
+		var address = args[0];
+		var asset = args[1];
+		if (address) {
+			if (validationUtils.isValidAddress(address))
+				db.query("SELECT COUNT(*) AS count FROM my_addresses WHERE address = ?", [address], function(rows) {
+					if (rows[0].count)
+						db.query(
+							"SELECT asset, is_stable, SUM(amount) AS balance \n\
+							FROM outputs JOIN units USING(unit) \n\
+							WHERE is_spent=0 AND address=? AND sequence='good' AND asset "+(asset ? "="+db.escape(asset) : "IS NULL")+" \n\
+							GROUP BY is_stable", [address],
+							function(rows) {
+								var balance = {};
+								balance[asset || 'base'] = {
+									stable: 0,
+									pending: 0
+								};
+								for (var i = 0; i < rows.length; i++) {
+									var row = rows[i];
+									balance[asset || 'base'][row.is_stable ? 'stable' : 'pending'] = row.balance;
+								}
+								cb(null, balance);
+							}
+						);
+					else
+						cb("address not found");
+				});
+			else
+				cb("invalid address");
+		}
+		else
+			Wallet.readBalance(wallet_id, function(balances) {
+				console.log('getbalance took '+(Date.now()-start_time)+'ms');
+				cb(null, balances);
+			});
+	});
+
+
 	server.listen(conf.rpcPort, conf.rpcInterface);
 }
 
@@ -126,10 +166,28 @@ function postTimestamp(address) {
 	composer.composeDataFeedJoint(address, datafeed, headlessWallet.signer, callbacks);
 }
 
+function postTrustme(address) {
+    var composer = require('tttcore/composer.js');
+    var network = require('tttcore/network.js');
+    var callbacks = composer.getSavingCallbacks({
+        ifNotEnoughFunds: function(err) {
+            console.error(err);
+        },
+        ifError: function(err) {
+            console.error(err);
+        },
+        ifOk: function(objJoint) {
+            network.broadcastJoint(objJoint);
+        }
+    });
+
+    composer.composeTrustmeJoint(address, 1,'sakdfgjojeoitg3j9i4ojtiwjrgloko3', headlessWallet.signer, callbacks);
+}
+
 eventBus.once('headless_wallet_ready', function() {
 	initRPC();
 	headlessWallet.readSingleAddress(function(address) {
-		setInterval(postTimestamp, conf.TIMESTAMPING_INTERVAL, address);
+		setInterval(postTrustme, 5000, address);
 	});
 });
 
