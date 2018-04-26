@@ -8,7 +8,7 @@ exports.bServeAsHub = true;
 exports.bLight = false;
 
 exports.initial_witnesses = [
-	'ZQFHJXFWT2OCEBXF26GFXJU4MPASWPJT'
+	'ZQFHJXFWT2OCEBXF26GFXJU4MPASWPJA'
 ];
 
 exports.trustedRegistries = [
