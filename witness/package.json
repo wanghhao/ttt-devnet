@@ -1,5 +1,5 @@
 {
-  "name": "byteball-devnet-witness",
+  "name": "trustnote-devnet-witness",
   "version": "1.0.0",
   "description": "Custom byteball DAG",
   "main": "server.js",
@@ -11,8 +11,8 @@
   },
   "license": "MIT",
   "dependencies": {
-    "headless-ttt": "file:../../headless-ttt",
-    "ttt-supernode": "file:../../ttt-supernode",
-    "ttt-explorer": "file:../../ttt-explorer"
+    "trustnote-headless": "file:../../trustnote-headless",
+    "trustnote-witness": "file:../../trustnote-witness",
+    "trustnote-explorer": "file:../../trustnote-explorer"
   }
 }

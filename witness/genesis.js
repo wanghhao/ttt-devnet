@@ -1,16 +1,16 @@
 "use strict";
-const db = require('tttcore/db.js');
-const headlessWallet = require('headless-ttt');
-const eventBus = require('tttcore/event_bus.js');
-const constants = require('tttcore/constants.js');
+const db = require('trustnote-common/db.js');
+const headlessWallet = require('trustnote-headless');
+const eventBus = require('trustnote-common/event_bus.js');
+const constants = require('trustnote-common/constants.js');
 
 function onError(err) {
     throw Error(err);
 }
 
-function createGenesisUnit(witness, onDone) {
-    var composer = require('tttcore/composer.js');
-    var network = require('tttcore/network.js');
+function createGenesisUnit(address, onDone) {
+    var composer = require('trustnote-common/composer.js');
+    var network = require('trustnote-common/network.js');
 
     var savingCallbacks = composer.getSavingCallbacks({
         ifNotEnoughFunds: onError,
@@ -23,15 +23,15 @@ function createGenesisUnit(witness, onDone) {
 
     composer.setGenesis(true);
     composer.composeJoint({
-        witnesses: [witness],
-        paying_addresses: [witness],
+        witnesses: [address],
+        paying_addresses: [address],
         outputs: [
-            { address: witness, amount: 1000000 },
-            { address: witness, amount: 1000000 },
-            { address: witness, amount: 1000000 },
-            { address: witness, amount: 1000000 },
-            { address: witness, amount: 1000000 },
-            { address: witness, amount: 0 }, // change output
+            { address: address, amount: 1000000 },
+            { address: address, amount: 1000000 },
+            { address: address, amount: 1000000 },
+            { address: address, amount: 1000000 },
+            { address: address, amount: 1000000 },
+            { address: address, amount: 0 }, // change output
         ],
         signer: headlessWallet.signer,
         callbacks: {
@@ -46,17 +46,17 @@ function createGenesisUnit(witness, onDone) {
 
 }
 
-function addMyWitness(witness, onDone) {
-    db.query("INSERT INTO my_witnesses (address) VALUES (?)", [witness], onDone);    
-}
+// function addMyWitness(witness, onDone) {
+//     db.query("INSERT INTO my_witnesses (address) VALUES (?)", [witness], onDone);    
+// }
 
 eventBus.once('headless_wallet_ready', function() {
     headlessWallet.readSingleAddress(function(address) {
         createGenesisUnit(address, function(genesisHash) {
             console.log("Genesis created, hash=" + genesisHash);
-            addMyWitness(address, function() {
+            // addMyWitness(address, function() {
                 process.exit(0);
-            });
+            // });
         });
     });
 });

@@ -1,12 +1,12 @@
 "use strict";
-require("tttcore/wallet.js");
-const witness = require('ttt-supernode');
-const explorer = require('ttt-explorer/explorer.js');
-const headlessWallet = require('headless-ttt');
-const eventBus = require('tttcore/event_bus.js');
-const validationUtils = require("tttcore/validation_utils.js");
-const conf = require('tttcore/conf.js');
-const constants = require('tttcore/constants.js');
+require("trustnote-common/wallet.js");
+const witness = require("trustnote-witness");
+//const explorer = require('ttt-explorer/explorer.js');
+const headlessWallet = require('trustnote-headless');
+const eventBus = require('trustnote-common/event_bus.js');
+const validationUtils = require("trustnote-common/validation_utils.js");
+const conf = require('trustnote-common/conf.js');
+const constants = require('trustnote-common/constants.js');
 
 function initRPC() {
 	var rpc = require('json-rpc2');
@@ -112,13 +112,13 @@ function initRPC() {
 	});
 
 
-	server.listen(conf.rpcPort, conf.rpcInterface);
+	// server.listen(conf.rpcPort, conf.rpcInterface);
 }
 
 function createIndivisibleAssetPayment(asset, amount, fromAddress, toAddress, toDevice, callback) {
-	var network = require('tttcore/network.js');
-	var indivisibleAsset = require('tttcore/indivisible_asset.js');
-	var walletGeneral = require('tttcore/wallet_general.js');
+	var network = require('trustnote-common/network.js');
+	var indivisibleAsset = require('trustnote-common/indivisible_asset.js');
+	var walletGeneral = require('trustnote-common/wallet_general.js');
 
 	indivisibleAsset.composeAndSaveIndivisibleAssetPaymentJoint({
 		asset: asset,
@@ -145,8 +145,8 @@ function createIndivisibleAssetPayment(asset, amount, fromAddress, toAddress, to
 }
 
 function postTimestamp(address) {
-	var composer = require('tttcore/composer.js');
-	var network = require('tttcore/network.js');
+	var composer = require('trustnote-common/composer.js');
+	var network = require('trustnote-common/network.js');
 	var callbacks = composer.getSavingCallbacks({
 		ifNotEnoughFunds: function(err) {
 			console.error(err);
@@ -167,8 +167,8 @@ function postTimestamp(address) {
 }
 
 function postTrustme(address) {
-    var composer = require('tttcore/composer.js');
-    var network = require('tttcore/network.js');
+    var composer = require('trustnote-common/composer.js');
+    var network = require('trustnote-common/network.js');
     var callbacks = composer.getSavingCallbacks({
         ifNotEnoughFunds: function(err) {
             console.error(err);
@@ -184,15 +184,33 @@ function postTrustme(address) {
     composer.composeTrustmeJoint(address, 1,'sakdfgjojeoitg3j9i4ojtiwjrgloko3', headlessWallet.signer, callbacks);
 }
 
+function postEquihash(address) {
+    var composer = require('trustnote-common/composer.js');
+    var network = require('trustnote-common/network.js');
+    var callbacks = composer.getSavingCallbacks({
+        ifNotEnoughFunds: function(err) {
+            console.error(err);
+        },
+        ifError: function(err) {
+            console.error(err);
+        },
+        ifOk: function(objJoint) {
+            network.broadcastJoint(objJoint);
+        }
+    });
+
+	composer.composeEquihashJoint(address,1,'i m seed',1,'sakdfgjojeoitg3j9i4ojtiwjrgloko3', headlessWallet.signer, callbacks);
+}
+
 eventBus.once('headless_wallet_ready', function() {
-	initRPC();
+	// initRPC();
 	headlessWallet.readSingleAddress(function(address) {
-		setInterval(postTrustme, 5000, address);
+		setInterval(postTrustme, 3000, address);
 	});
 });
 
 eventBus.on('paired', function(from_address) {
     console.log('Sucessfully paired with:' + from_address);
-    const device = require('tttcore/device.js');
+    const device = require('trustnote-common/device.js');
     device.sendMessageToDevice(from_address, "text", "Welcome to devnet Witness!");
 });

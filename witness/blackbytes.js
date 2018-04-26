@@ -1,14 +1,14 @@
 "use strict";
-const headlessWallet = require('headless-ttt');
-const eventBus = require('tttcore/event_bus.js');
+const headlessWallet = require('trustnote-headless');
+const eventBus = require('trustnote-common/event_bus.js');
 
 function onError(err){
 	throw Error(err);
 }
 
 function createBlackbytes(address, onDone){
-	var composer = require('tttcore/composer.js');
-	var network = require('tttcore/network.js');
+	var composer = require('trustnote-common/composer.js');
+	var network = require('trustnote-common/network.js');
 
 	var callbacks = composer.getSavingCallbacks({
 		ifNotEnoughFunds: onError,

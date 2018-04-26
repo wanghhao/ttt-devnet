@@ -1,11 +1,11 @@
 {
-  "name": "ttt-devnet",
+  "name": "trustnote-devnet",
   "version": "1.0.0",
-  "description": "Devnet for TTT",
+  "description": "Devnet for trustnote",
   "main": "index.js",
   "dependencies": {
-    "byteball-devnet-hub": "file:hub",
-    "byteball-devnet-witness": "file:witness"
+    "trustnote-devnet-hub": "file:hub",
+    "trustnote-devnet-witness": "file:witness"
   },
   "devDependencies": {},
   "scripts": {

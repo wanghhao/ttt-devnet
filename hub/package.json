@@ -1,5 +1,5 @@
 {
-  "name": "byteball-devnet-hub",
+  "name": "trustnote-devnet-hub",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
@@ -9,6 +9,6 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "ttt-hub": "file:../../ttt-hub"
+    "trustnote-hub": "file:../../trustnote-hub"
   }
 }
