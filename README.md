@@ -1,4 +1,4 @@
-# Byteball Devnet Witness and Hub
+# Trustnote Devnet Witness and Hub
 
 This project provides a lightweight disposable byteball network that can be used on demand for developement. It generates a new DAG from scratch with a simplified protocol for your own use. Benefits of using the devnet compared to testnet are:
 * no wait times for sychronizing the network to the latest state
@@ -15,24 +15,9 @@ The devnet protocol is simplified to a single witness which runs multiple serive
 * timestamp oracle for time-bound smart contracts
 
 ## Creating the devnet
-Start with installing the dependencies:
-```
-$ npm install
-```
-
-Initialize devnet configuration and network protocol:
-```
-$ npm run init
-```
-
 Create the geneis unit (when it asks for password, press enter):
 ```
 $ npm run genesis
-```
-
-Define blackbytes asset (when it asks for password, press enter):
-```
-$ npm run blackbytes
 ```
 
 Start the hub
@@ -44,22 +29,6 @@ Start the witness (when it asks for password, press enter):
 ```
 $ npm run witness
 ```
-
-## Connecting to the devnet
-
-A devnet wallet must use the same byteball protocol as the witness in order to work. The recommended way to set up devnet is to use the [byteball-devnet-config](../../../byteball-devnet-config). Alternatively, you can copy the `config/constants.js` to the `node_modules/tttcore/` overwriting the existing constants.js:
-
-```
-$ cp config/constants.js node_modules/tttcore/constants.js
-```
-
-The devnet hub runs on port 6611 to which wallets can connect to by setting the following parameters in the conf.js of the wallet:
-
-```
-exports.WS_PROTOCOL = 'ws://';
-exports.hub = 'localhost:6611';
-```
-
 ## Distributing bytes and blackbytes
 
 The witness exposes a simplified JSON RPC endpoint on port 6612 that can be used to send bytes and blackbytes to any wallets.
