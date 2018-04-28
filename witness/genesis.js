@@ -1,4 +1,4 @@
-// "use strict";
+ "use strict";
 const db = require('trustnote-common/db.js');
 const headlessWallet = require('trustnote-headless');
 const eventBus = require('trustnote-common/event_bus.js');
