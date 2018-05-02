@@ -21,3 +21,5 @@ exports.from_email='witness';
 exports.initial_witnesses = [
 	'ZQFHJXFWT2OCEBXF26GFXJU4MPASWPJT'
 ];
+
+exports.bServeAsSuperNode=true;

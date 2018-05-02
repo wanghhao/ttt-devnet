@@ -4,6 +4,7 @@
   "description": "Devnet for trustnote",
   "main": "index.js",
   "dependencies": {
+    "sqlite3": "https://github.com/mapbox/node-sqlite3/tarball/master",
     "trustnote-devnet-hub": "file:hub",
     "trustnote-devnet-witness": "file:witness"
   },

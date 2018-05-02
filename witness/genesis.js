@@ -48,7 +48,7 @@ function createGenesisUnit(address, onDone) {
 }
 
 // function addMyWitness(witness, onDone) {
-//     db.query("INSERT INTO my_witnesses (address) VALUES (?)", [witness], onDone);    
+//     db.query("INSERT INTO my_witnesses (address) VALUES (?)", [witness], onDone);
 // }
 
 
@@ -66,33 +66,33 @@ function changeGenesisHash (genesisHash){
     var enableWriteIndex = true;
     var index = 1;
 
-      fRead.on('end', function(){
-          enableWriteIndex = false;
-      });
+    fRead.on('end', function(){
+        enableWriteIndex = false;
+    });
 
-      var objReadline = readline.createInterface({
-          input: fRead,
-          output: fWrite
-      });
+    var objReadline = readline.createInterface({
+        input: fRead,
+        output: fWrite
+    });
 
-      objReadline.on('line', function(line){
-          if (enableWriteIndex) {
-              if(line.indexOf('exports.GENESIS_UNIT')>=0){
-                  line = "exports.GENESIS_UNIT = '"+genesisHash+"';";
-              }
-              index ++;
-              fWrite.write(line+"\r\n");
-          }
-      });
+    objReadline.on('line', function(line){
+        if (enableWriteIndex) {
+            if(line.indexOf('exports.GENESIS_UNIT')>=0){
+                line = "exports.GENESIS_UNIT = '"+genesisHash+"';";
+            }
+            index ++;
+            fWrite.write(line+"\r\n");
+        }
+    });
 
-      objReadline.on('close', function(){
-          fs.unlinkSync(fReadName);
+    objReadline.on('close', function(){
+        fs.unlinkSync(fReadName);
 
-          copyFile(function () {
-              fs.renameSync(fWriteName, fReadName);
-              process.exit(0);
-          });
-      });
+        copyFile(function () {
+            fs.renameSync(fWriteName, fReadName);
+            process.exit(0);
+        });
+    });
 }
 
 function copyFile(cb) {

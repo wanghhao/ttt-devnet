@@ -1,12 +1,15 @@
 "use strict";
 require("trustnote-common/wallet.js");
+require("trustnote-common/enforce_singleton.js");
 const witness = require("trustnote-witness");
-//const explorer = require('ttt-explorer/explorer.js');
+const explorer = require('trustnote-explorer/explorer.js');
 const headlessWallet = require('trustnote-headless');
 const eventBus = require('trustnote-common/event_bus.js');
 const validationUtils = require("trustnote-common/validation_utils.js");
 const conf = require('trustnote-common/conf.js');
 const constants = require('trustnote-common/constants.js');
+var db = require('trustnote-common/db.js');
+var storage=require('trustnote-common/storage.js');
 
 function initRPC() {
 	var rpc = require('json-rpc2');
@@ -110,9 +113,7 @@ function initRPC() {
 				cb(null, balances);
 			});
 	});
-
-
-	// server.listen(conf.rpcPort, conf.rpcInterface);
+	server.listen(conf.rpcPort, conf.rpcInterface);
 }
 
 function createIndivisibleAssetPayment(asset, amount, fromAddress, toAddress, toDevice, callback) {
@@ -166,46 +167,12 @@ function postTimestamp(address) {
 	composer.composeDataFeedJoint(address, datafeed, headlessWallet.signer, callbacks);
 }
 
-function postTrustme(address) {
-    var composer = require('trustnote-common/composer.js');
-    var network = require('trustnote-common/network.js');
-    var callbacks = composer.getSavingCallbacks({
-        ifNotEnoughFunds: function(err) {
-            console.error(err);
-        },
-        ifError: function(err) {
-            console.error(err);
-        },
-        ifOk: function(objJoint) {
-            network.broadcastJoint(objJoint);
-        }
-    });
 
-    composer.composeTrustmeJoint(address, 1,'sakdfgjojeoitg3j9i4ojtiwjrgloko3', headlessWallet.signer, callbacks);
-}
-
-function postEquihash(address) {
-    var composer = require('trustnote-common/composer.js');
-    var network = require('trustnote-common/network.js');
-    var callbacks = composer.getSavingCallbacks({
-        ifNotEnoughFunds: function(err) {
-            console.error(err);
-        },
-        ifError: function(err) {
-            console.error(err);
-        },
-        ifOk: function(objJoint) {
-            network.broadcastJoint(objJoint);
-        }
-    });
-
-	composer.composeEquihashJoint(address,1,'i m seed',1,'sakdfgjojeoitg3j9i4ojtiwjrgloko3', headlessWallet.signer, callbacks);
-}
 
 eventBus.once('headless_wallet_ready', function() {
-	// initRPC();
+	initRPC();
 	headlessWallet.readSingleAddress(function(address) {
-		setInterval(postTrustme, 3000, address);
+		storage.restoreRound(db,address);
 	});
 });
 
